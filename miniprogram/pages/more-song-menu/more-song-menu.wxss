@@ -1,0 +1,18 @@
+/* pages/more-song-menu/more-song-menu.wxss */
+
+page {
+  padding-bottom: 40rpx;
+  box-sizing: border-box;
+}
+
+.more-song-menu {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.more-song-menu .item {
+  display: inline-block;
+  margin: 8rpx;
+  width: 46%;
+}

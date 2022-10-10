@@ -1,0 +1,16 @@
+<!--pages/detail-video/detail-video.wxml-->
+
+<video class="video" src="{{MVUrl}}" referrer-policy="origin" autoplay />
+
+<scroll-view class="scroll" scroll-y>
+  <view class="info">
+    <view class="vname">{{detail.name}}</view>
+    <view class="aname">{{detail.artistName}}</view>
+  </view>
+
+  <view class="related">
+    <block wx:for="{{simiMV}}" wx:key="vid">
+      <video-item class="video-item" e-video-item="e-video-item" e-album="e-album" e-content="e-content" videoData="{{item}}" />
+    </block>
+  </view>
+</scroll-view>

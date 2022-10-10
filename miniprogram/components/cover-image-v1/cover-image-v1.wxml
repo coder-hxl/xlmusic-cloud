@@ -1,0 +1,7 @@
+<!--components/cover-image/cover-image.wxml-->
+<wxs src="../../utils/format.wxs" module="fmt"></wxs>
+
+<view class="cover">
+  <image class="image" src="{{coverImgUrl}}" mode="widthFix"></image>
+  <view class="count">{{fmt.formatCount(playCount)}}</view>
+</view>

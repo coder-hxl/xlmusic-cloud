@@ -1,0 +1,8 @@
+<!--components/area-header/area-header.wxml-->
+<view class="area-header">
+  <view class="title">{{title}}</view>
+  <view class="more" wx:if="{{hasMore}}" bindtap="onMoreTap">
+    <view class="text">{{more}}</view>
+    <van-icon name="arrow" />
+  </view>
+</view>

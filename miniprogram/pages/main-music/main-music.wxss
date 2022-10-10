@@ -1,0 +1,136 @@
+/* pages/main-muisc/main-music.wxss */
+
+page {
+  --search-background-color: #fff;
+  --search-padding: 20rpx 0;
+
+  --title-top: 30rpx;
+
+  box-sizing: border-box;
+  padding: 0 24rpx;
+  background-color: #fafafa;
+}
+
+.new-song,
+.top-list,
+.recommendSongMenu,
+.choicenessSongMenu {
+  display: flow-root;
+  margin-top: var(--title-top);
+}
+
+.banner {
+  border-radius: 12rpx;
+  overflow: hidden;
+}
+
+.banner .banner-image {
+  width: 100%;
+}
+
+.new-song .list .song-item-v1 {
+  display: flow-root;
+  margin: 22rpx 0;
+}
+
+.choiceness-song-menu {
+  margin: var(--title-top, -24rpx 0);
+}
+
+.choiceness-song-menu .header {
+  display: flow-root;
+  padding: 0 24rpx;
+  margin-bottom: 22rpx;
+}
+
+.choiceness-song-menu .list {
+  white-space: nowrap;
+}
+
+.choiceness-song-menu .list .list-item {
+  display: inline-block;
+  margin-left: 24rpx;
+  width: 220rpx;
+}
+
+.choiceness-song-menu .list .list-item:last-of-type {
+  margin-right: 24rpx;
+}
+
+.top-list .item {
+  display: flow-root;
+  margin: 16rpx 0;
+}
+
+/* --------------------- 播放工具栏 --------------------- */
+
+.play-bar-placeholder {
+  height: 110rpx;
+}
+
+.play-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 20rpx;
+  width: 100%;
+  height: 80rpx;
+  background-color: #fff;
+  box-shadow: 0 -4rpx 6rpx rgba(189, 189, 189, 0.3);
+}
+
+.play-bar .left {
+  flex: 1;
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.play-bar .left .album {
+  position: absolute;
+  bottom: 30rpx;
+  left: 0;
+  width: 80rpx;
+  height: 0;
+  border-radius: 50%;
+}
+
+@keyframes albumRotate {
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.album-anim {
+  animation: albumRotate 10s infinite linear;
+}
+
+.play-bar .left .name {
+  margin-left: 84rpx;
+  font-size: 26rpx;
+}
+
+.play-bar .right {
+  display: flex;
+  align-items: center;
+}
+
+.play-bar .right .pause-or-play {
+  width: 44rpx;
+  height: 0;
+}
+
+.play-bar .right .play-list {
+  margin-left: 14rpx;
+  width: 50rpx;
+  height: 0;
+}

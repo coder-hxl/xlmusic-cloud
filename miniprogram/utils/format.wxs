@@ -1,0 +1,31 @@
+function padLeft(time) {
+  time = time.toString()
+  if (time.length >= 2) return time
+
+  return ('00' + time).slice(time.length)
+}
+
+function formatCount(count) {
+  count = Number(count)
+  if (count >= 100000000) {
+    return (count / 100000000).toFixed(1) + '亿'
+  } else if (count >= 10000) {
+    return (count / 10000).toFixed(1) + '万'
+  } else {
+    return count
+  }
+}
+
+function formatTime(time) {
+  time = Number(time / 1000)
+  var minute = Math.floor(time / 60)
+  var second = Math.floor(time) % 60
+
+  return padLeft(minute) + ':' + padLeft(second)
+}
+
+module.exports = {
+  padLeft: padLeft,
+  formatCount: formatCount,
+  formatTime: formatTime
+}

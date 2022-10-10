@@ -1,0 +1,43 @@
+/* components/song-item-v1/song-item-v1.wxss */
+.song-item-v1 {
+  display: flex;
+}
+
+.song-item-v1 .image {
+  width: 120rpx;
+  height: 0;
+  border-radius: 12rpx;
+}
+
+.song-item-v1 .content {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 18rpx;
+  overflow: hidden;
+}
+
+.content .info .song-name {
+  font-size: 30rpx;
+}
+
+.content .info .artists {
+  padding: 6rpx 50rpx 0 0;
+  font-size: 24rpx;
+  color: #666;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.artists .artist-name:first-child {
+  margin-left: 0 !important;
+}
+
+.artists .artist-name {
+  margin-left: 8rpx;
+}

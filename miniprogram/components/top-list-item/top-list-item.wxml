@@ -1,0 +1,13 @@
+<!--components/top-list-item/top-list-item.wxml-->
+<view class="top-list-item" bindtap="onTopListItemTap">
+  <view class="content">
+    <view class="title">{{itemData.name}}</view>
+    <view class="tracks">
+      <block wx:for="{{itemData.tracks}}" wx:key="first">
+        <view class="tracks-item">{{index + 1}}.{{item.first}} - {{item.second}}</view>
+      </block>
+    </view>
+  </view>
+
+  <cover-image-v1 class="cover-image" coverImgUrl="{{itemData.coverImgUrl || ''}}" playCount="{{itemData.playCount || 0}}"></cover-image-v1>
+</view>

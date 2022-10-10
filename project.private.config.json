@@ -1,0 +1,56 @@
+{
+  "description": "项目私有配置文件。此文件中的内容将覆盖 project.config.json 中的相同字段。项目的改动优先同步到此文件中。详见文档：https://developers.weixin.qq.com/miniprogram/dev/devtools/projectconfig.html",
+  "projectname": "xlmusic-cloud",
+  "setting": {
+    "compileHotReLoad": true,
+    "urlCheck": false
+  },
+  "condition": {
+    "miniprogram": {
+      "list": [
+        {
+          "name": "推荐视频",
+          "pathName": "pages/main-video/main-video",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "视频详情",
+          "pathName": "pages/detail-video/detail-video",
+          "query": "id=14544676",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "歌单详情",
+          "pathName": "pages/detail-song-menu/detail-song-menu",
+          "query": "id=19723756",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "更多新歌",
+          "pathName": "pages/more-new-song/more-new-song",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "音乐播放",
+          "pathName": "pages/music-player/music-player",
+          "query": "id=167655",
+          "launchMode": "default",
+          "scene": null
+        },
+        {
+          "name": "我的",
+          "pathName": "pages/main-profile/main-profile",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
+        }
+      ]
+    }
+  }
+}

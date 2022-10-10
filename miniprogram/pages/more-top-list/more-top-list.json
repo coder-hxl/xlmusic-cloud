@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "top-list-item": "/components/top-list-item/top-list-item",
+    "cover-image-v1": "/components/cover-image-v1/cover-image-v1"
+  }
+}

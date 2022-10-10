@@ -1,0 +1,18 @@
+<!--pages/more-top-list/more-top-list.wxml-->
+<view class="more-top-list">
+  <view class="official-list">
+    <view class="title">官方榜</view>
+    <block wx:for="{{officialList}}" wx:key="id">
+      <top-list-item class="item" itemData="{{item}}"></top-list-item>
+    </block>
+  </view>
+
+  <view class="global-list">
+    <view class="title">全球榜</view>
+    <view class="global-list-box">
+      <block wx:for="{{globalList}}" wx:key="id">
+        <cover-image-v1 class="cover-image" coverImgUrl="{{item.coverImgUrl}}" playCount="{{item.playCount}}" bindtap="onGloablItemTap" data-id="{{item.id}}"></cover-image-v1>
+      </block>
+    </view>
+  </view>
+</view>

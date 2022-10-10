@@ -1,0 +1,6 @@
+/* pages/more-new-song/more-new-song.wxss */
+.title {
+  padding: 10rpx 30rpx;
+  font-size: 40rpx;
+  font-weight: 600;
+}

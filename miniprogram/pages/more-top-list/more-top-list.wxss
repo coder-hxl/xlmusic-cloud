@@ -1,0 +1,32 @@
+/* pages/more-top-list/more-top-list.wxss */
+page {
+  padding: 0 30rpx 40rpx;
+  box-sizing: border-box;
+}
+.title {
+  font-weight: 34rpx;
+  font-weight: 600;
+}
+
+.more-top-list .item {
+  display: flow-root;
+  margin-top: 20rpx;
+}
+
+.global-list {
+  margin-top: 40rpx;
+}
+
+.global-list-box {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin-top: 20rpx;
+}
+
+.cover-image {
+  width: 48%;
+  margin-bottom: 14rpx;
+  border-radius: 12rpx;
+  overflow: hidden;
+}

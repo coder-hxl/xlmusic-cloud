@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "cover-image-v1": "/components/cover-image-v1/cover-image-v1"
+  }
+}

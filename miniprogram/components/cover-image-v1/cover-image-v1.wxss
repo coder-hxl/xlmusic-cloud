@@ -1,0 +1,22 @@
+/* components/cover-image/cover-image.wxss */
+.cover {
+  position: relative;
+  display: flex;
+  width: 100%;
+}
+
+.image {
+  width: 100%;
+  height: 0;
+}
+
+.count {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: 2rpx 10rpx;
+  font-size: 22rpx;
+  border-radius: 12rpx;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.5);
+}

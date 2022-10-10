@@ -1,0 +1,139 @@
+/* pages/music-player/music-player.wxss */
+.cover {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.cover {
+  background-color: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(200rpx);
+}
+
+.tabs {
+  display: flex;
+  color: #ccc;
+}
+
+.tabs .division {
+  margin: 0 8rpx;
+}
+
+.tabs .activate {
+  color: #fff;
+}
+
+.music {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  padding: 30rpx 60rpx 0;
+  color: #fff;
+}
+
+.music .album {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.music .album .img {
+  width: 100%;
+  height: 0;
+  border-radius: 12rpx;
+}
+
+.music .name {
+  margin-top: 30rpx;
+  font-size: 40rpx;
+  font-weight: 600;
+}
+
+.music .artists {
+  margin: 20rpx 10rpx 20rpx 0;
+  font-size: 28rpx;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.music .artists .ar-name {
+  font-weight: 600;
+}
+
+.music .artists .division {
+  margin: 0 10rpx;
+}
+
+.music .lyric {
+  padding: 0 60rpx;
+  height: 40rpx;
+  font-size: 30rpx;
+  text-align: center;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.progress {
+  margin-top: 16rpx;
+}
+
+.progress .slider {
+  margin: 0 10rpx 0 20rpx;
+}
+
+.progress .time {
+  display: flex;
+  justify-content: space-between;
+  font-size: 26rpx;
+}
+
+.control {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 50rpx 0;
+}
+
+.control .btn {
+  width: 60rpx;
+  height: 0;
+}
+
+.control .pause {
+  width: 110rpx;
+}
+
+.lyric-list .scroll-view {
+  box-sizing: border-box;
+  padding: 40rpx 0;
+  height: 100%;
+  text-align: center;
+  font-size: 30rpx;
+  color: #cecece;
+}
+
+.lyric-list .scroll-view ::-webkit-scrollbar {
+  display: none;
+}
+
+.lyric-list .scroll-view .item {
+  padding: 0 40rpx;
+  height: 30px;
+  line-height: 30px;
+}
+
+.lyric-list .scroll-view .item.activate {
+  height: 40px;
+  line-height: 40px;
+  font-size: 34rpx;
+  color: #00aeff;
+}

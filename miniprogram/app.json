@@ -1,0 +1,61 @@
+{
+  "pages": [
+    "pages/main-music/main-music",
+    "pages/main-video/main-video",
+    "pages/main-profile/main-profile",
+    "pages/detail-search/detail-search",
+    "pages/list-song/list-song",
+    "pages/more-song-menu/more-song-menu",
+    "pages/more-top-list/more-top-list",
+    "pages/detail-song-menu/detail-song-menu"
+  ],
+  "subPackages": [
+    {
+      "root": "packagePlayer",
+      "name": "musicPlayer",
+      "pages": ["pages/music-player/music-player"]
+    },
+    {
+      "root": "packageVideo",
+      "pages": ["pages/detail-video/detail-video"]
+    }
+  ],
+  "preloadRule": {
+    "pages/main-music/main-music": {
+      "network": "all",
+      "packages": ["musicPlayer"]
+    }
+  },
+  "window": {
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "XLMuisc",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/main-music/main-music",
+        "text": "音乐",
+        "iconPath": "./assets/images/tabbar/music_normal.png",
+        "selectedIconPath": "./assets/images/tabbar/music_active.png"
+      },
+      {
+        "pagePath": "pages/main-video/main-video",
+        "text": "视频",
+        "iconPath": "./assets/images/tabbar/video_normal.png",
+        "selectedIconPath": "./assets/images/tabbar/video_active.png"
+      },
+      {
+        "pagePath": "pages/main-profile/main-profile",
+        "text": "我的",
+        "iconPath": "./assets/images/tabbar/profile.png",
+        "selectedIconPath": "./assets/images/tabbar/profile_active.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "usingComponents": {
+    "van-icon": "@vant/weapp/icon/index"
+  }
+}

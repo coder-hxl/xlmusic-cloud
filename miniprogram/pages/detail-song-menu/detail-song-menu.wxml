@@ -1,0 +1,36 @@
+<!--pages/detail-song-menu/detail-song-menu.wxml-->
+<wxs src="../../utils/format.wxs" module="fmt"></wxs>
+
+
+<view wx:if="{{detailData.coverImgUrl}}" class="cover" style="background: url({{detailData.coverImgUrl}}) no-repeat center/100%">
+  <view class="header">
+    <view class="cover-img">
+      <image class="image" src="{{detailData.coverImgUrl}}" mode="widthFix"></image>
+    </view>
+    <view class="detail">
+      <view class="name">{{detailData.name}}</view>
+      <view class="creator">
+        <image class="avatar" src="{{detailData.creator.avatarUrl}}" mode="widthFix"></image>
+        <view class="nickname">{{detailData.creator.nickname}}</view>
+      </view>
+      <view class="description">简介: {{detailData.description ? detailData.description : ''}}</view>
+    </view>
+  </view>
+
+  <view class="footer">
+    <view class="subscribed-count">
+      <image class="count-icon" mode="widthFix" src="/assets/images/icons/favor_icon.png"></image>
+      <text class="text">{{fmt.formatCount(detailData.subscribedCount)}}</text>
+    </view>
+    <view class="share-count">
+      <image class="count-icon" mode="widthFix" src="/assets/images/icons/share_icon.png"></image>
+      <text class="text">{{fmt.formatCount(detailData.shareCount)}}</text>
+    </view>
+  </view>
+</view>
+
+<view class="song-list">
+  <block wx:for="{{detailData.tracks}}" wx:key="id">
+    <song-item-v2 order="{{index + 1}}" type="{{type}}" mySongMenu_id="{{detailData._id}}" itemData="{{item}}" data-index="{{index}}" bindtap="onSongItemTap"></song-item-v2>
+  </block>
+</view>

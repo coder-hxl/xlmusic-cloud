@@ -1,0 +1,17 @@
+<!--components/song-item-v2/song-item-v2.wxml-->
+<wxs src="/utils/format.wxs" module="fmt"></wxs>
+
+<view class="song-item-v2  {{stripe && order % 2 === 0 ? 'zebra' : ''}}" bindtap="onSongItemTap">
+  <view class="order">{{fmt.padLeft(order)}}</view>
+  <image class="love" mode="widthFix" src="/assets/images/icons/love{{isLove ? '-activate' : ''}}.png" catchtap="handleLoveRecord" />
+  <view class="song">
+    <view class="name">{{itemData.name}}</view>
+    <view class="ars">
+      <image class="icon" mode="widthFix" src="/assets/images/icons/sq_icon.png"></image>
+      <block wx:for="{{itemData.ar}}" wx:key="id">
+        <view class="ars-itm">{{item.name}}</view>
+      </block>
+    </view>
+  </view>
+  <van-icon class="control" name="weapp-nav" catchtap="onControlTap" />
+</view>

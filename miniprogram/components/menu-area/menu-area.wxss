@@ -1,0 +1,25 @@
+/* components/menu-area/menu-area.wxss */
+
+.menu-area {
+  margin: 0 -24rpx;
+}
+
+.menu-area .header {
+  display: flow-root;
+  padding: 0 24rpx;
+  margin-bottom: 22rpx;
+}
+
+.menu-area .scroll-view {
+  white-space: nowrap;
+}
+
+.scroll-view .item {
+  display: inline-block;
+  margin-left: 24rpx;
+  width: 220rpx;
+}
+
+.scroll-view .item:last-of-type {
+  margin-right: 24rpx;
+}

@@ -1,0 +1,23 @@
+/* components/menu-item/menu-item.wxss */
+.menu-item {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.cover-image {
+  border-radius: 12rpx;
+  overflow: hidden;
+}
+
+.content {
+  padding: 6rpx;
+  font-size: 24rpx;
+
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}

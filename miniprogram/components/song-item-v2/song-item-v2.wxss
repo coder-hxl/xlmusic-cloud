@@ -1,0 +1,64 @@
+/* components/song-item-item-v2/song-item-item-v2.wxss */
+.zebra {
+  background-color: #fafafa;
+}
+
+.song-item-v2 {
+  display: flex;
+  align-items: center;
+  padding: 26rpx 10rpx;
+  border-bottom: 1px solid rgb(235, 235, 235);
+}
+
+.order {
+  padding: 0 20rpx;
+  text-align: center;
+  font-size: 28rpx;
+}
+
+.love {
+  padding: 0 4rpx;
+  width: 38rpx;
+  height: 0;
+}
+
+.song {
+  padding-left: 20rpx;
+  flex: 1;
+}
+
+.name {
+  font-size: 32rpx;
+}
+
+.ars {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 6rpx;
+  font-size: 24rpx;
+  color: #666;
+}
+
+.icon {
+  width: 40rpx;
+  height: 0;
+  margin-right: 6rpx;
+  margin-top: 2rpx;
+}
+
+.ars-itm::before {
+  content: '/';
+  padding: 0 6rpx;
+}
+
+.ars-itm:first-of-type::before {
+  content: '';
+  padding: 0;
+}
+
+.control {
+  margin: 0 30rpx;
+  font-size: 36rpx;
+  color: #3b3b3b;
+}

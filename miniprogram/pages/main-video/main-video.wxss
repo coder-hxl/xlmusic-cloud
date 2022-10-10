@@ -1,0 +1,14 @@
+/* pages/main-video/main-video.wxss */
+page {
+  background-color: #fafafa;
+}
+
+.main-video {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.main-video .item {
+  width: 48%;
+}

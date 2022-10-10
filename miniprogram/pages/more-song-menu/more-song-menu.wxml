@@ -1,0 +1,8 @@
+<!--pages/more-song-menu/more-song-menu.wxml-->
+<view class="more-song-menu">
+  <block wx:for="{{songMenu}}" wx:key="id">
+    <view class="item">
+      <menu-item itemData="{{item}}"></menu-item>
+    </view>
+  </block>
+</view>

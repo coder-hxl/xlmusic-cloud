@@ -1,0 +1,8 @@
+<!--pages/more-new-song/more-new-song.wxml-->
+<view class="title">{{title}}</view>
+
+<view>
+  <block wx:for="{{songList}}" wx:key="this">
+    <song-item-v2 order="{{index + 1}}" type="3" itemData="{{item}}" data-index="{{index}}" bindtap="onSongItemTap"></song-item-v2>
+  </block>
+</view>

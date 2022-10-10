@@ -1,0 +1,5 @@
+<!--components/menu-item/menu-item.wxml-->
+<view class="menu-item" bindtap="onMenuItemTap">
+  <cover-image-v1 class="cover-image" coverImgUrl="{{itemData.coverImgUrl || ''}}" playCount="{{itemData.playCount || 0}}"></cover-image-v1>
+  <view class="content">{{itemData.name}}</view>
+</view>

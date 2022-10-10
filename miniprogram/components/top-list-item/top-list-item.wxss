@@ -1,0 +1,35 @@
+/* components/top-list-item/top-list-item.wxss */
+.top-list-item {
+  display: flex;
+  justify-content: space-between;
+  border-radius: 12rpx;
+  background-color: #f1f1f1;
+  overflow: hidden;
+}
+
+.top-list-item .content {
+  padding: 20rpx 30rpx 0;
+  width: 450rpx;
+}
+
+.content .title {
+  font-size: 30rpx;
+}
+
+.content .tracks {
+  margin-top: 8rpx;
+  font-size: 22rpx;
+}
+
+.content .tracks .tracks-item {
+  display: flow-root;
+  margin: 4rpx 0;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.top-list-item .cover-image {
+  flex: 1;
+}
