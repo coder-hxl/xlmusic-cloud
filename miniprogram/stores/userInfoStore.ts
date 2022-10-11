@@ -1,6 +1,6 @@
-import xlStore from "xl-store"
-import { cmd, loveCol, mySongMenuCol, historyCol } from "../database/index"
-import { verifyLogin } from "../utils/verify"
+import xlStore from 'xl-store'
+import { cmd, loveCol, mySongMenuCol, historyCol } from '../database/index'
+import { verifyLogin, verifyColMsg } from '../utils/verify'
 
 export interface ISongMenuRecord {
   _id?: string
@@ -23,9 +23,16 @@ export interface IHistory {
   tracks: any[]
 }
 
+export interface IAddOrDeleteRes {
+  res: boolean
+  showDialog: boolean
+  successMsg?: string
+  failMsg?: string
+}
+
 const initData = {
   songRecord(name: string, description: string | null = null): ISongMenuRecord {
-    const userInfo = wx.getStorageSync("userInfo") as WechatMiniprogram.UserInfo
+    const userInfo = wx.getStorageSync('userInfo') as WechatMiniprogram.UserInfo
 
     const res: ISongMenuRecord = {
       name,
@@ -33,21 +40,21 @@ const initData = {
       coverImgUrl: null,
       creator: {
         nickname: userInfo.nickName,
-        avatarUrl: userInfo.avatarUrl,
+        avatarUrl: userInfo.avatarUrl
       },
       subscribedCount: 0,
       shareCount: 0,
-      tracks: [],
+      tracks: []
     }
 
     return res
   },
   history() {
     const data: IHistory = {
-      tracks: [],
+      tracks: []
     }
     return data
-  },
+  }
 }
 
 const userInfoStore = xlStore({
@@ -56,6 +63,7 @@ const userInfoStore = xlStore({
     loveRecord: {},
     mySongMenu: [],
     history: {},
+    isLogin: false
   },
 
   actions: {
@@ -63,22 +71,21 @@ const userInfoStore = xlStore({
       // 1.获取用户信息
       let res: WechatMiniprogram.GetUserProfileSuccessCallbackResult | null = null
       try {
-        res = await wx.getUserProfile({ desc: "获取您的头像和名称" })
+        res = await wx.getUserProfile({ desc: '获取您的头像和名称' })
       } catch (error) {
-        wx.showToast({ title: "登录失败~", icon: "error" })
         return {
-          state: false,
+          state: false
         }
       }
 
       // 2.保存数据
       const userInfo = res.userInfo
-      wx.setStorageSync("userInfo", userInfo)
+      wx.setStorageSync('userInfo', userInfo)
       await this.initStoreDataAction()
 
       return {
         state: true,
-        data: userInfo,
+        data: userInfo
       }
     },
 
@@ -89,8 +96,8 @@ const userInfoStore = xlStore({
       if (res.data.length) return true
 
       // 2.生成初始数据
-      const loveRecord = initData.songRecord("我的喜欢")
-      loveRecord.coverImgUrl = "/assets/images/icons/love-activate.png"
+      const loveRecord = initData.songRecord('我的喜欢')
+      loveRecord.coverImgUrl = '/assets/images/icons/love-activate.png'
 
       // 3.添加到云数据库
       const addRes = await loveCol.add(loveRecord)
@@ -107,7 +114,7 @@ const userInfoStore = xlStore({
       if (res.data.length) return
 
       const mySongMenuRecord = initData.songRecord(songMenuName, songMenuDes)
-      mySongMenuRecord.coverImgUrl = "/assets/images/icons/music-box.png"
+      mySongMenuRecord.coverImgUrl = '/assets/images/icons/music-box.png'
 
       const addRes = await mySongMenuCol.add(mySongMenuRecord)
       this.mySongMenu.push({ ...mySongMenuRecord, _id: addRes._id })
@@ -123,24 +130,24 @@ const userInfoStore = xlStore({
       this.history = { ...historyRecord, _id: addRes._id }
     },
 
-    initStoreDataAction() {
-      const userInfo = wx.getStorageSync("userInfo")
+    async initStoreDataAction() {
+      const userInfo = wx.getStorageSync('userInfo')
       this.userInfo = userInfo
 
-      this.createLoveRecordAction().then(() => {
-        this.getLoveRecordAction()
-      })
+      await this.createLoveRecordAction()
+      await this.getLoveRecordAction()
 
-      this.getMySongMenuAction()
+      await this.getMySongMenuAction()
 
-      this.createHistoryRecordAction().then(() => {
-        this.getHistoryAction()
-      })
+      await this.createHistoryRecordAction()
+      await this.getHistoryAction()
+
+      this.isLogin = true
     },
 
     async getLoveRecordAction() {
       const res = await loveCol.get({}, null, false)
-      console.log("getLoveRecordAction", res.data)
+      console.log('getLoveRecordAction', res.data)
       const loveRecord = res.data[0] as ISongMenuRecord
       loveRecord.tracks = loveRecord.tracks.reverse()
       return (this.loveRecord = loveRecord)
@@ -152,7 +159,7 @@ const userInfoStore = xlStore({
       for (const item of mySongMenus) {
         item.tracks.reverse()
       }
-      console.log("getMySongMenuAction", mySongMenus)
+      console.log('getMySongMenuAction', mySongMenus)
 
       return (this.mySongMenu = mySongMenus)
     },
@@ -162,12 +169,37 @@ const userInfoStore = xlStore({
       const data = res.data[0]
       data.tracks = data.tracks.reverse()
 
-      console.log("getHistoryAction", data)
+      console.log('getHistoryAction', data)
 
       return (this.history = data)
     },
 
-    async addLoveSong(currentSong: any) {
+    async addLoveSong(currentSong: any): Promise<IAddOrDeleteRes> {
+      // 0.验证
+      // 0.1. 验证登录
+      const isLogin = this.isLogin
+      if (!isLogin) {
+        const res = await this.loginActions()
+        if (!res.state) {
+          return {
+            res: false,
+            showDialog: false
+          }
+        }
+      }
+
+      // 0.2. 验证是否被收藏, 不可重复收藏
+      const loveRecord: ISongMenuRecord = this.loveRecord
+      const isHas = loveRecord.tracks
+        .map((item) => item.id)
+        .includes(currentSong.id)
+      if (isHas) {
+        return {
+          res: true,
+          showDialog: false
+        }
+      }
+
       // 1.添加歌曲
       const addRes = await loveCol.update(
         {},
@@ -177,15 +209,26 @@ const userInfoStore = xlStore({
 
       // 2.更新封面图片
       const coverImgUrl = currentSong.al?.picUrl ?? currentSong.picUrl
-      await loveCol.update({}, { coverImgUrl }, false)
+      const updateImgRes = await loveCol.update({}, { coverImgUrl }, false)
 
       // 3.获取最新数据
       userInfoStore.getLoveRecordAction()
 
-      return addRes
+      // 4.验证结果
+      const res = verifyColMsg(addRes.errMsg, updateImgRes.errMsg)
+
+      return {
+        res,
+        showDialog: true,
+        successMsg: '收藏成功~',
+        failMsg: '收藏失败~'
+      }
     },
 
-    async addSongToMenu(menuIndex: number, song: any) {
+    async addSongToMenu(
+      menuIndex: number,
+      song: any
+    ): Promise<IAddOrDeleteRes> {
       // 1.获取选择的歌单
       const addSongMenu = this.mySongMenu[menuIndex]
       const isHasSong = !!addSongMenu.tracks.filter(
@@ -193,8 +236,11 @@ const userInfoStore = xlStore({
       ).length
 
       if (isHasSong) {
-        wx.showToast({ title: "已有该歌曲~", icon: "error" })
-        return false
+        return {
+          res: false,
+          showDialog: true,
+          failMsg: '已有该歌曲~'
+        }
       }
 
       // 2.添加歌曲
@@ -206,17 +252,24 @@ const userInfoStore = xlStore({
 
       // 3.更新封面图片
       const coverImgUrl = song.al?.picUrl ?? song.picUrl
-
-      await mySongMenuCol.update(
+      const updateImgRes = await mySongMenuCol.update(
         { _id: addSongMenu._id },
         { coverImgUrl },
         false
       )
 
-      // 4.获取最新数据
+      // 4.验证结果
+      const res = verifyColMsg(addRes.errMsg, updateImgRes.errMsg)
+
+      // 5.获取最新数据
       userInfoStore.getMySongMenuAction()
 
-      return addRes
+      return {
+        res,
+        showDialog: true,
+        successMsg: '添加成功~',
+        failMsg: '添加失败~'
+      }
     },
 
     async addHistoryAction(song: any) {
@@ -225,7 +278,7 @@ const userInfoStore = xlStore({
       this.getHistoryAction()
     },
 
-    async deleteLoveSong(songId: number) {
+    async deleteLoveSong(songId: number): Promise<IAddOrDeleteRes> {
       // 1.获取追踪的歌曲, 选出要保留的
       const newTracks: any[] = this.loveRecord.tracks
         .filter((item: any) => item.id !== songId)
@@ -238,16 +291,27 @@ const userInfoStore = xlStore({
       const newCoverData = [...newTracks].pop()
       const coverImgUrl = newTracks.length
         ? newCoverData.al?.picUrl ?? newCoverData.picUrl
-        : "/assets/images/icons/love-activate.png"
-      await loveCol.update({}, { coverImgUrl }, false)
+        : '/assets/images/icons/love-activate.png'
+      const updateImgRes = await loveCol.update({}, { coverImgUrl }, false)
 
-      // 4.获取最新数据
+      // 4.验证结果
+      const res = verifyColMsg(deleteRes.errMsg, updateImgRes.errMsg)
+
+      // 5.获取最新数据
       userInfoStore.getLoveRecordAction()
 
-      return deleteRes
+      return {
+        res,
+        showDialog: false,
+        successMsg: '删除成功~',
+        failMsg: '删除失败~'
+      }
     },
 
-    async deleteSongToMenu(menuId: string, songId: number) {
+    async deleteSongToMenu(
+      menuId: string,
+      songId: number
+    ): Promise<IAddOrDeleteRes> {
       // 1.获取对应歌单
       const currentSongMenu: ISongMenuRecord = userInfoStore.mySongMenu.filter(
         (item: ISongMenuRecord) => item._id === menuId
@@ -270,15 +334,26 @@ const userInfoStore = xlStore({
       const newCoverData = [...tracks].pop()
       const coverImgUrl = tracks.length
         ? newCoverData.al?.picUrl ?? newCoverData.picUrl
-        : "/assets/images/icons/music-box.png"
-      await mySongMenuCol.update({ _id: menuId }, { coverImgUrl }, false)
+        : '/assets/images/icons/music-box.png'
+      const updateImgRes = await mySongMenuCol.update(
+        { _id: menuId },
+        { coverImgUrl },
+        false
+      )
+
+      const res = verifyColMsg(deleteRes.errMsg, updateImgRes.errMsg)
 
       // 4.获取最新数据
       userInfoStore.getMySongMenuAction()
 
-      return deleteRes
-    },
-  },
+      return {
+        res,
+        showDialog: true,
+        successMsg: '删除成功~',
+        failMsg: '删除失败~'
+      }
+    }
+  }
 })
 
 verifyLogin() && userInfoStore.initStoreDataAction()

@@ -13,17 +13,11 @@ Page({
     this.setData({ title })
 
     if (listType == 1) {
-      const songList = userInfoStore.history.tracks
-      this.setData({ songList })
-      userInfoStore.watch('history', this.handleHistoryChange)
+      userInfoStore.watchEffect('history', this.handleHistoryChange)
     } else if (listType == 2) {
       newStore.fetchNewSongsActions(100)
       newStore.watch('newSongs', this.handleNewSongs)
     }
-  },
-
-  onUnload() {
-    newStore.deleteWatch('songList', this.handleNewSongs)
   },
 
   onSongItemTap(event: any) {
@@ -40,5 +34,10 @@ Page({
   handleHistoryChange(key: string, value: IHistory) {
     const songList = value.tracks
     this.setData({ songList })
+  },
+
+  onUnload() {
+    userInfoStore.deleteWatch('history', this.handleHistoryChange)
+    newStore.deleteWatch('songList', this.handleNewSongs)
   }
 })

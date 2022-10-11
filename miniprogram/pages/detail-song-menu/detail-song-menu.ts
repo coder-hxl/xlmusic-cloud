@@ -15,13 +15,10 @@ Page({
     this.setData({ type: typeNum })
 
     if (typeNum === 1) {
-      const detailData = userInfoStore.loveRecord
-      this.setData({ detailData })
-      userInfoStore.watch('loveRecord', this.handleLoveStore)
+      userInfoStore.watchEffect('loveRecord', this.handleLoveStore)
     } else if (typeNum === 2) {
-      const detailData = userInfoStore.mySongMenu[mySongMenuIndex]
-      this.setData({ detailData, mySongMenuIndex })
-      userInfoStore.watch('mySongMenu', this.handleMySongMenuStore)
+      this.setData({ mySongMenuIndex })
+      userInfoStore.watchEffect('mySongMenu', this.handleMySongMenuStore)
     } else if (typeNum === 3) {
       this.fetchDetailSongMenu(id)
     }
@@ -54,7 +51,6 @@ Page({
 
   onUnload() {
     userInfoStore.deleteWatch('loveRecord', this.handleLoveStore)
-
     userInfoStore.deleteWatch('mySongMenu', this.handleMySongMenuStore)
   }
 })

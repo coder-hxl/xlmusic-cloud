@@ -1,77 +1,86 @@
 // components/song-item-v2/song-item-v2.ts
-import userInfoStore, { ISongMenuRecord } from "../../stores/userInfoStore"
+import userInfoStore, {
+  ISongMenuRecord,
+  IAddOrDeleteRes
+} from '../../stores/userInfoStore'
 
 Component({
   properties: {
     type: {
       type: Number,
-      value: -1,
+      value: -1
     },
     mySongMenu_id: {
       type: String,
-      value: "",
+      value: ''
     },
     order: {
       type: Number,
-      value: 0,
+      value: 0
     },
     stripe: {
       type: Boolean,
-      value: true,
+      value: true
     },
     itemData: {
       type: Object,
-      value: {},
-    },
+      value: {}
+    }
   },
 
   data: {
     isLove: false,
+    fetchIsLoveFn: null as null | Function
   },
 
   lifetimes: {
-    attached() {
-      const itemData = this.data.itemData
-      const loveRecord = userInfoStore.loveRecord
-
-      // 没登录就获取不到
-      if (!Object.keys(loveRecord).length) return
-
-      const isLove = loveRecord.tracks
-        .map((item: any) => item.id)
-        .includes(itemData.id)
-
-      this.setData({ isLove })
+    ready() {
+      // 添加追踪
+      const fetchIsLove = (this.data.fetchIsLoveFn = this.fetchIsLove.bind(
+        this
+      ))
+      userInfoStore.watchEffect('isLogin', fetchIsLove)
     },
+
+    detached() {
+      // 删除追踪
+      const fetchIsLove = this.data.fetchIsLoveFn as Function
+      userInfoStore.deleteWatch('isLogin', fetchIsLove)
+    }
   },
 
   methods: {
     onSongItemTap() {
       const id = this.properties.itemData.id
       wx.navigateTo({
-        url: `/packagePlayer/pages/music-player/music-player?id=${id}`,
+        url: `/packagePlayer/pages/music-player/music-player?id=${id}`
       })
     },
 
     async onControlTap() {
+      // 0.验证是否登陆
+      const isLogin = userInfoStore.isLogin
+      if (!isLogin) {
+        const res = await userInfoStore.loginActions()
+        if (!res.state) return
+      }
+
+      // 1.根据类型提供选项
       const type = this.properties.type
       const itemList =
-        type === 3 ? ["添加到歌单"] : ["添加到歌单", "移除出歌单"]
+        type === 3 ? ['添加到歌单'] : ['添加到歌单', '移除出歌单']
 
-      // 2.获取用户点击的结果
+      // 2.获取用户点击的选项
       let res = null
       try {
         res = await wx.showActionSheet({ itemList })
       } catch (error) {
-        console.log(error)
+        return
       }
 
       // 3.根据结果做出对应处理
       const tapIndex = res?.tapIndex
-      if (tapIndex === undefined) return
-
-      let handleRes = null
-
+      let handleRes: boolean | IAddOrDeleteRes = false
       switch (tapIndex) {
         // 添加到歌单
         case 0:
@@ -91,28 +100,28 @@ Component({
       }
 
       // 4.验证结果
-      if (!handleRes) return
+      if (!handleRes || !handleRes.showDialog) return
 
-      const msg = handleRes.errMsg.split(":").pop()
-      if (msg === "ok") {
-        wx.showToast({ title: `操作成功~` })
+      if (handleRes.res) {
+        wx.showToast({ title: handleRes.successMsg || '成功' })
       } else {
-        wx.showToast({ title: `操作失败~`, icon: "error" })
+        wx.showToast({ title: handleRes.failMsg || '失败', icon: 'error' })
       }
     },
 
     async handleLoveRecord() {
+      // 1.查看是否被收藏
       const currentSong = this.data.itemData
       const isLove = this.data.isLove
-      let handleRes = null
+      let handleRes: IAddOrDeleteRes | boolean = false
 
-      // 删除/添加 喜欢
+      // 2.删除/添加 喜欢
       if (isLove) {
         handleRes = await userInfoStore.deleteLoveSong(currentSong.id)
-        this.setData({ isLove: false })
+        this.setData({ isLove: !handleRes.res })
       } else {
         handleRes = await userInfoStore.addLoveSong(currentSong)
-        this.setData({ isLove: true })
+        this.setData({ isLove: handleRes.res })
       }
 
       return handleRes
@@ -129,16 +138,13 @@ Component({
       try {
         res = await wx.showActionSheet({ itemList: songMenuNames })
       } catch (error) {
-        console.log(error)
+        return false
       }
 
-      const tapIndex = res?.tapIndex
-
-      if (tapIndex === undefined) return false
-
       // 3.更新
+      const tapIndex = res?.tapIndex
       const song = this.data.itemData
-      const addRes = userInfoStore.addSongToMenu(tapIndex, song)
+      const addRes = await userInfoStore.addSongToMenu(tapIndex, song)
 
       return addRes
     },
@@ -151,5 +157,18 @@ Component({
 
       return res
     },
-  },
+
+    // ============= store =============
+    fetchIsLove(key: string, isLogin: boolean) {
+      // 必须登录才能获取
+      if (!isLogin) return
+
+      const itemData = this.properties.itemData
+      const isLove = userInfoStore.loveRecord.tracks
+        .map((item: any) => item.id)
+        .includes(itemData.id)
+
+      this.setData({ isLove })
+    }
+  }
 })

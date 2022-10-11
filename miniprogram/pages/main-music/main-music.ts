@@ -1,18 +1,18 @@
-import newStore from '../../stores/newStore'
-import songMenuStore from '../../stores/songMenuStore'
-import topListStore from '../../stores/topListStore'
-import playerStore from '../../stores/playerStore'
+import newStore from "../../stores/newStore"
+import songMenuStore from "../../stores/songMenuStore"
+import topListStore from "../../stores/topListStore"
+import playerStore from "../../stores/playerStore"
 
-import { getBanner } from '../../services/music'
+import { getBanner } from "../../services/music"
 
-import querySelect from '../../utils/query-select'
-import throttle from '../../utils/throttle'
+import querySelect from "../../utils/query-select"
+import throttle from "../../utils/throttle"
 
 const querySelectThrottle = throttle(querySelect)
 
 Page({
   data: {
-    searchValue: '',
+    searchValue: "",
     banners: [],
     bannerHeight: 0,
 
@@ -24,53 +24,53 @@ Page({
     officialList: [],
 
     currentSong: {},
-    isPlaying: playerStore.isPlaying
+    isPlaying: playerStore.isPlaying,
   },
 
   // 加载
   onLoad() {
     this.fetchBanner()
 
-    newStore.watch('newSongs', this.handleData('newSongs'))
+    newStore.watch("newSongs", this.handleData("newSongs"))
     newStore.fetchNewSongsActions()
 
     songMenuStore.watch(
-      'recommendSongMenu',
-      this.handleData('recommendSongMenu')
+      "recommendSongMenu",
+      this.handleData("recommendSongMenu")
     )
     songMenuStore.fetchRecommendSongMenuAction()
 
     songMenuStore.watch(
-      'choicenessSongMenu',
-      this.handleData('choicenessSongMenu')
+      "choicenessSongMenu",
+      this.handleData("choicenessSongMenu")
     )
     songMenuStore.fetchChoicenessSongMenuAction()
 
-    topListStore.watch('officialList', this.handleOfficialList)
+    topListStore.watch("officialList", this.handleOfficialList)
     topListStore.fetchTopListAction()
 
-    playerStore.watch(['currentSong', 'isPlaying'], this.handlePlaySong)
+    playerStore.watch(["currentSong", "isPlaying"], this.handlePlaySong)
   },
 
   async onBannerImageLoad() {
-    const res = await querySelectThrottle('.banner-image')
+    const res = await querySelectThrottle(".banner-image")
     this.setData({ bannerHeight: res[0].height })
   },
 
   // 页面跳转
   onInputClick() {
-    wx.navigateTo({ url: '../detail-search/detail-search' })
+    wx.navigateTo({ url: "../detail-search/detail-search" })
   },
 
   onRecommendMoreTap() {
     const listType = 2
     wx.navigateTo({
-      url: `../list-song/list-song?listType=${listType}&title=最新音乐`
+      url: `../list-song/list-song?listType=${listType}&title=最新音乐`,
     })
   },
 
   onTopListMoreTap() {
-    wx.navigateTo({ url: '../more-top-list/more-top-list' })
+    wx.navigateTo({ url: "../more-top-list/more-top-list" })
   },
 
   // 网络请求
@@ -95,9 +95,9 @@ Page({
   },
 
   handlePlaySong(key: string, value: any) {
-    if (key === 'currentSong') {
+    if (key === "currentSong") {
       this.setData({ currentSong: value })
-    } else if (key === 'isPlaying') {
+    } else if (key === "isPlaying") {
       this.setData({ isPlaying: value })
     }
   },
@@ -109,12 +109,12 @@ Page({
   },
 
   onPlayBarLeftTap() {
-    wx.navigateTo({ url: '/packagePlayer/pages/music-player/music-player' })
+    wx.navigateTo({ url: "/packagePlayer/pages/music-player/music-player" })
   },
 
   onPauseOrPlayTap() {
     playerStore.changeMusicStateAction()
   },
 
-  onUnload() {}
+  onUnload() {},
 })

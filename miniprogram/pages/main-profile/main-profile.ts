@@ -21,22 +21,11 @@ Page({
   },
 
   onLoad() {
-    this.initLoginInfo()
+    // this.initLoginInfo()
 
     // 观察数据
-    const mySongMenu = userInfoStore.mySongMenu
-    this.setData({ mySongMenu })
-    userInfoStore.watch('mySongMenu', this.fetchMySongMenu)
-  },
-
-  initLoginInfo() {
-    const isLogin = verifyLogin()
-    if (isLogin) {
-      const userInfo = userInfoStore.userInfo
-      this.setData({ isLogin, userInfo })
-    } else {
-      this.setData({ isLogin })
-    }
+    userInfoStore.watchEffect('isLogin', this.fetchUserInfo)
+    userInfoStore.watchEffect('mySongMenu', this.fetchMySongMenu)
   },
 
   // ============== 事件处理 ==============
@@ -132,11 +121,21 @@ Page({
   onSongMenuDesIptTap() {},
 
   // ============== store 处理 ==============
+  fetchUserInfo(key: string, isLogin: boolean) {
+    if (isLogin) {
+      const userInfo: WechatMiniprogram.UserInfo = userInfoStore.userInfo
+      this.setData({ isLogin, userInfo })
+    } else {
+      this.setData({ isLogin })
+    }
+  },
+
   fetchMySongMenu(key: string, mySongMenu: any) {
     this.setData({ mySongMenu })
   },
 
   onUnload() {
+    userInfoStore.deleteWatch('isLogin', this.fetchUserInfo)
     userInfoStore.deleteWatch('mySongMenu', this.fetchMySongMenu)
   }
 })
