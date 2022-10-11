@@ -112,17 +112,30 @@ page {
 /* =============== 弹出框 =============== */
 
 .dialog .content {
-  padding: 50rpx;
+  padding: 30rpx;
 }
 
-.dialog .content .ipt {
-  margin-top: 40rpx;
-  padding-left: 8rpx;
+.dialog .content .item {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 10rpx;
   font-size: 26rpx;
-  color: #424242;
-  border-bottom: 1px solid rgb(173, 173, 173);
+  border-bottom: 2rpx solid #e4e4e4;
 }
 
-.dialog .content .ipt:first-of-type {
+.dialog .content .item .name {
+  text-align: right;
+  width: 15%;
+  height: 40rpx;
+}
+
+.dialog .content .dialog-input {
+  margin-left: 30rpx;
+  width: 85%;
+  height: 40rpx;
+  color: #666666;
+}
+
+.dialog .content .dialog-input:first-of-type {
   margin-top: 0;
 }

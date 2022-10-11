@@ -2,6 +2,8 @@ import xlStore from 'xl-store'
 import { cmd, loveCol, mySongMenuCol, historyCol } from '../database/index'
 import { verifyLogin, verifyColMsg } from '../utils/verify'
 
+import { ICreateSongMenuArg } from './userInfoTypes'
+
 export interface ISongMenuRecord {
   _id?: string
   _openid?: string
@@ -105,15 +107,13 @@ const userInfoStore = xlStore({
       return true
     },
 
-    async createMySongMenuRecordAction(
-      songMenuName: string,
-      songMenuDes: string
-    ) {
-      const res = await mySongMenuCol.get({ name: songMenuName }, null, false)
+    async createMySongMenuRecordAction(data: ICreateSongMenuArg) {
+      const { name, description } = data
+      const res = await mySongMenuCol.get({ name: name }, null, false)
 
       if (res.data.length) return
 
-      const mySongMenuRecord = initData.songRecord(songMenuName, songMenuDes)
+      const mySongMenuRecord = initData.songRecord(name, description)
       mySongMenuRecord.coverImgUrl = '/assets/images/icons/music-box.png'
 
       const addRes = await mySongMenuCol.add(mySongMenuRecord)
@@ -174,7 +174,7 @@ const userInfoStore = xlStore({
       return (this.history = data)
     },
 
-    async addLoveSong(currentSong: any): Promise<IAddOrDeleteRes> {
+    async addLoveSong(song: any): Promise<IAddOrDeleteRes> {
       // 0.验证
       // 0.1. 验证登录
       const isLogin = this.isLogin
@@ -190,9 +190,8 @@ const userInfoStore = xlStore({
 
       // 0.2. 验证是否被收藏, 不可重复收藏
       const loveRecord: ISongMenuRecord = this.loveRecord
-      const isHas = loveRecord.tracks
-        .map((item) => item.id)
-        .includes(currentSong.id)
+      const isHas = !!loveRecord.tracks.filter((item) => item.id === song.id)
+        .length
       if (isHas) {
         return {
           res: true,
@@ -201,14 +200,10 @@ const userInfoStore = xlStore({
       }
 
       // 1.添加歌曲
-      const addRes = await loveCol.update(
-        {},
-        { tracks: cmd.push(currentSong) },
-        false
-      )
+      const addRes = await loveCol.update({}, { tracks: cmd.push(song) }, false)
 
       // 2.更新封面图片
-      const coverImgUrl = currentSong.al?.picUrl ?? currentSong.picUrl
+      const coverImgUrl = song.al?.picUrl ?? song.picUrl
       const updateImgRes = await loveCol.update({}, { coverImgUrl }, false)
 
       // 3.获取最新数据

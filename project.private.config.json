@@ -49,6 +49,13 @@
           "query": "",
           "launchMode": "default",
           "scene": null
+        },
+        {
+          "name": "详细搜索",
+          "pathName": "pages/detail-search/detail-search",
+          "query": "",
+          "launchMode": "default",
+          "scene": null
         }
       ]
     }

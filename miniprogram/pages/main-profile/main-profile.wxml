@@ -38,9 +38,13 @@
   </view>
 </view>
 
-<van-dialog class="dialog" show="{{isShowDialog}}" title="创建歌单" close-on-click-overlay show-cancel-button use-slot bind:confirm="onDialogConfirmTap">
+<van-dialog class="dialog" show="{{isShowDialog}}" title="创建歌单" close-on-click-overlay show-cancel-button use-slot bind:confirm="onDialogConfirmTap" bind:close="onDialogCloseTap">
   <view class="content">
-    <input class="ipt" model:value="{{iptSongMenuName}}" bindinput="onSongMenuIptTap" placeholder="在此输入歌单名" />
-    <input class="ipt" model:value="{{iptSongMenuDes}}" bindinput="onSongMenuDesIptTap" placeholder="再此输入描述" />
+    <block wx:for="{{dialogData}}" wx:key="name">
+      <view class="item">
+        <text class="name">{{item.name}}</text>
+        <input value="{{createSongMenuData[item.modelKey]}}" class="dialog-input" data-modelkey="{{item.modelKey}}" placeholder="{{item.placeholder}}" bindinput="onCreateSongMenuIptTap" />
+      </view>
+    </block>
   </view>
 </van-dialog>

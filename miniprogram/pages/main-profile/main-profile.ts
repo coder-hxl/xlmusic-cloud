@@ -1,7 +1,10 @@
 // pages/main-profile/main-profile.ts
+import { debounce } from 'underscore'
 import userInfoStore, { ISongMenuRecord } from '../../stores/userInfoStore'
 
 import { verifyLogin } from '../../utils/verify'
+
+import { ICreateSongMenuArg } from '../../stores/userInfoTypes'
 
 Page({
   data: {
@@ -11,8 +14,12 @@ Page({
       { name: '历史记录', nickName: 'history', icon: 'history' }
     ],
 
-    iptSongMenuName: '',
-    iptSongMenuDes: '',
+    createSongMenuData: {
+      name: '',
+      description: ''
+    } as ICreateSongMenuArg,
+
+    dialogData: [] as any[],
 
     mySongMenu: [],
 
@@ -21,11 +28,28 @@ Page({
   },
 
   onLoad() {
-    // this.initLoginInfo()
+    this.initDialogData()
 
     // 观察数据
     userInfoStore.watchEffect('isLogin', this.fetchUserInfo)
     userInfoStore.watchEffect('mySongMenu', this.fetchMySongMenu)
+  },
+
+  initDialogData() {
+    this.setData({
+      dialogData: [
+        {
+          name: '歌单名',
+          modelKey: 'name',
+          placeholder: '输入歌单名'
+        },
+        {
+          name: '描述',
+          modelKey: 'description',
+          placeholder: '输入描述'
+        }
+      ]
+    })
   },
 
   // ============== 事件处理 ==============
@@ -82,9 +106,19 @@ Page({
   },
 
   onDialogConfirmTap() {
-    const { iptSongMenuName, iptSongMenuDes } = this.data
+    const data = this.data.createSongMenuData
 
-    userInfoStore.createMySongMenuRecordAction(iptSongMenuName, iptSongMenuDes)
+    userInfoStore.createMySongMenuRecordAction(data)
+  },
+
+  onDialogCloseTap() {
+    // 关闭弹出框时清除输入框的内容
+    this.setData({
+      createSongMenuData: {
+        name: '',
+        description: ''
+      }
+    })
   },
 
   onMySongMenuItemTap(event: any) {
@@ -116,9 +150,15 @@ Page({
     }
   },
 
-  onSongMenuIptTap() {},
+  onCreateSongMenuIptTap: debounce(function (this: any, event: any) {
+    const { modelkey } = event.currentTarget.dataset
+    const value = event.detail.value
 
-  onSongMenuDesIptTap() {},
+    const rawData = this.data.createSongMenuData
+    const newData = { ...rawData, [modelkey]: value }
+
+    this.setData({ createSongMenuData: newData })
+  }, 300),
 
   // ============== store 处理 ==============
   fetchUserInfo(key: string, isLogin: boolean) {
