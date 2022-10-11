@@ -2,35 +2,12 @@ import xlStore from 'xl-store'
 import { cmd, loveCol, mySongMenuCol, historyCol } from '../database/index'
 import { verifyLogin, verifyColMsg } from '../utils/verify'
 
-import { ICreateSongMenuArg } from './userInfoTypes'
-
-export interface ISongMenuRecord {
-  _id?: string
-  _openid?: string
-  name: string
-  description: null | string
-  coverImgUrl: null | string
-  creator: {
-    nickname: string
-    avatarUrl: string
-  }
-  subscribedCount: number
-  shareCount: number
-  tracks: any[]
-}
-
-export interface IHistory {
-  _id?: string
-  _openid?: string
-  tracks: any[]
-}
-
-export interface IAddOrDeleteRes {
-  res: boolean
-  showDialog: boolean
-  successMsg?: string
-  failMsg?: string
-}
+import {
+  ISongMenuRecord,
+  IAddOrDeleteRes,
+  IHistory,
+  ICreateSongMenuArg
+} from './userInfoTypes'
 
 const initData = {
   songRecord(name: string, description: string | null = null): ISongMenuRecord {
@@ -268,6 +245,9 @@ const userInfoStore = xlStore({
     },
 
     async addHistoryAction(song: any) {
+      const isLogin = this.isLogin
+      if (!isLogin) return
+
       await historyCol.update({}, { tracks: cmd.push(song) }, false)
 
       this.getHistoryAction()

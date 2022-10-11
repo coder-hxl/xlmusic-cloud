@@ -1,8 +1,6 @@
 // components/song-item-v2/song-item-v2.ts
-import userInfoStore, {
-  ISongMenuRecord,
-  IAddOrDeleteRes
-} from '../../stores/userInfoStore'
+import userInfoStore from '../../stores/userInfoStore'
+import { ISongMenuRecord, IAddOrDeleteRes } from '../../stores/userInfoTypes'
 
 Component({
   properties: {
