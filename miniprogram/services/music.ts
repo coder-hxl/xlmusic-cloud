@@ -43,3 +43,7 @@ export function getSongDetail(ids: number | string) {
 export function getLyric(id: number) {
   return xlRequest.get({ url: '/lyric', data: { id } })
 }
+
+export function getSearchSuggestKey(keywords: string) {
+  return xlRequest.get({ url: '/search/suggest?keywords', data: { keywords } })
+}

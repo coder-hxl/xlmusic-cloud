@@ -248,9 +248,25 @@ const userInfoStore = xlStore({
       const isLogin = this.isLogin
       if (!isLogin) return
 
-      await historyCol.update({}, { tracks: cmd.push(song) }, false)
+      // 处理历史记录里歌的个数
+      this.getHistoryAction().then((res) => {
+        const tracks: any[] = res.tracks
+        const upSong = tracks[tracks.length - 1]
 
-      this.getHistoryAction()
+        // 1.同一首不用重复添加
+        console.log(song.id, upSong.id)
+        if (upSong && upSong.id === song.id)
+          if (tracks.length > 200) {
+            // 2.不允许超出200首
+            historyCol.update({}, { tracks: cmd.unshift() }, false)
+            historyCol.update({}, { tracks: cmd.push(song) }, false)
+            this.getHistoryAction()
+            return
+          }
+
+        historyCol.update({}, { tracks: cmd.push(song) }, false)
+        this.getHistoryAction()
+      })
     },
 
     async deleteLoveSong(songId: number): Promise<IAddOrDeleteRes> {

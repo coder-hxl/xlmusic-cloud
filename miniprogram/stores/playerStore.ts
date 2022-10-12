@@ -31,38 +31,52 @@ const playerStore = xlStore({
   },
 
   actions: {
-    playMusicWithSongIdAction(id: number) {
-      // 0.播放前初始化数据
-      this.currentSong = {}
-      this.lyricInfo = []
-      this.currentLyricText = ''
-      this.currentLyricIndex = -1
-      this.durationTime = 0
-      this.currentTime = 0
+    playMusicWithSongIdAction(id: number, isInit = true) {
+      /* 
+        1.是否进行初始化:
+          - true: 跳转进播放页需要进行数据初始化, 用户渲染页面以及请求新歌资源
+          - false: 播放列表只有一首歌则无需进行初始化操作, 只需跳转到指定的位置, 无需重复请求资源
+       */
+      if (isInit) {
+        // 1.播放前初始化数据
+        this.currentSong = {}
+        this.lyricInfo = []
+        this.currentLyricText = ''
+        this.currentLyricIndex = -1
+        this.durationTime = 0
+        this.currentTime = 0
+
+        // 2.根据 id 获取歌信息
+        // 2.1. 获取歌曲信息
+        getSongDetail(id).then((res) => {
+          const song = res.songs[0]
+          this.currentSong = song
+          this.durationTime = song.dt
+
+          // 添加到历史记录
+          userInfoStore.addHistoryAction(song)
+        })
+
+        // 2.2. 获取详细歌词
+        getLyric(id).then((res) => {
+          this.lyricInfo = parseLyric(res.lrc.lyric)
+        })
+
+        // 3.请求播放资源
+        if (this.id !== id) {
+          this.id = id
+          audioContext.stop()
+          audioContext.src = `https://music.163.com/song/media/outer/url?id=${id}.mp3`
+          audioContext.autoplay = true
+        } else {
+          audioContext.seek(0)
+        }
+      } else {
+        audioContext.seek(0)
+      }
+
+      // 2.通用设置
       this.isPlaying = true
-
-      // 1.保存id
-      this.id = id
-
-      // 2.根据 id 获取歌信息
-      // 2.1. 获取歌曲信息
-      getSongDetail(id).then((res) => {
-        const song = res.songs[0]
-        this.currentSong = song
-        this.durationTime = song.dt
-
-        // 添加到历史记录
-        userInfoStore.addHistoryAction(song)
-      })
-      // 2.2. 获取详细歌词
-      getLyric(id).then((res) => {
-        this.lyricInfo = parseLyric(res.lrc.lyric)
-      })
-
-      // 3.播放歌曲
-      audioContext.stop()
-      audioContext.src = `https://music.163.com/song/media/outer/url?id=${id}.mp3`
-      audioContext.autoplay = true
 
       // 4.监听歌曲播放
       if (this.isFirst) {
@@ -87,9 +101,13 @@ const playerStore = xlStore({
         })
 
         audioContext.onWaiting(() => {
+          this.isPlaying = false
           audioContext.pause()
         })
         audioContext.onCanplay(() => {
+          audioContext.play()
+        })
+        audioContext.onSeeking(() => {
           audioContext.play()
         })
 
@@ -132,6 +150,9 @@ const playerStore = xlStore({
       const songListLength = this.playSongList.length
       let index = this.playSongIndex
       const playModeName = this.playModeIndex
+
+      if (songListLength === 1)
+        return this.playMusicWithSongIdAction(this.id, false)
 
       // 2.获取要播放歌曲对应的索引号
       switch (playModeName) {

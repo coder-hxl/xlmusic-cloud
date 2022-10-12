@@ -45,20 +45,12 @@ Page({
     const id = options.id
 
     // 2.根据 id 播放歌曲
-
     if (id !== undefined) {
       playerStore.playMusicWithSongIdAction(id)
-    } else {
-      this.setData({
-        currentSong: playerStore.currentSong,
-        lyricInfo: playerStore.lyricInfo,
-        durationTime: playerStore.durationTime,
-        isPlaying: playerStore.isPlaying
-      })
     }
 
     // 3.监听 store 共享数据
-    playerStore.watch(this.data.stateKey, this.onPlayerStore)
+    playerStore.watchEffect(this.data.stateKey, this.onPlayerStore)
   },
 
   updateProgress: throttle(

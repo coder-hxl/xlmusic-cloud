@@ -1,2 +1,10 @@
 <!--pages/detail-search/detail-search.wxml-->
-<text>pages/detail-search/detail-search.wxml</text>
+<!-- 1.搜索 -->
+<van-search focus placeholder="请输入搜索关键词" background="#fafafa" bind:change="onInputChange" />
+
+<!-- 2.推荐列表 -->
+<view class="suggest-songs">
+  <block wx:for="{{suggestSongs}}" wx:key="id">
+    <view class="name" data-item="{{item}}" bindtap="onSuggestItemTap">{{item.name}}</view>
+  </block>
+</view>

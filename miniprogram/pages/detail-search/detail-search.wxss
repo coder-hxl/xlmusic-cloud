@@ -1,1 +1,24 @@
 /* pages/detail-search/detail-search.wxss */
+page {
+  --search-background-color: #fff;
+  --search-padding: 20rpx 0;
+
+  box-sizing: border-box;
+  padding: 0 24rpx;
+  background-color: #fafafa;
+}
+
+/* ========== 推荐列表 ========== */
+.suggest-songs {
+  margin-top: 6rpx;
+}
+
+.suggest-songs .name {
+  padding: 14rpx 0;
+  font-size: 28rpx;
+  border-bottom: 1rpx solid #eeeeee;
+}
+
+.suggest-songs .name:first-of-type {
+  border-top: 1rpx solid #eeeeee;
+}

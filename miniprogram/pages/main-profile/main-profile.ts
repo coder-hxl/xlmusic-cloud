@@ -1,6 +1,7 @@
 // pages/main-profile/main-profile.ts
 import { debounce } from 'underscore'
-import userInfoStore, { ISongMenuRecord } from '../../stores/userInfoStore'
+import userInfoStore from '../../stores/userInfoStore'
+import { ISongMenuRecord } from '../../stores/userInfoTypes'
 
 import { verifyLogin } from '../../utils/verify'
 
