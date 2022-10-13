@@ -1,6 +1,7 @@
-import newStore from '../../stores/newStore'
+import songlistStore from '../../stores/songListStore'
 import playerStore from '../../stores/playerStore'
-import userInfoStore, { IHistory } from '../../stores/userInfoStore'
+import userInfoStore from '../../stores/userInfoStore'
+import { IHistory } from '../../stores/userInfoTypes'
 
 Page({
   data: {
@@ -15,8 +16,11 @@ Page({
     if (listType == 1) {
       userInfoStore.watchEffect('history', this.handleHistoryChange)
     } else if (listType == 2) {
-      newStore.fetchNewSongsActions(100)
-      newStore.watch('newSongs', this.handleNewSongs)
+      songlistStore.fetchNewSongsActions(100)
+      songlistStore.watchEffect('newSongs', this.handleNewSongs)
+    } else if (listType == 3) {
+      songlistStore.fetchSearchSong(title)
+      songlistStore.watchEffect('searchSongs', this.handleSrarchSongs)
     }
   },
 
@@ -36,8 +40,13 @@ Page({
     this.setData({ songList })
   },
 
+  handleSrarchSongs(key: string, value: any) {
+    this.setData({ songList: value })
+  },
+
   onUnload() {
     userInfoStore.deleteWatch('history', this.handleHistoryChange)
-    newStore.deleteWatch('songList', this.handleNewSongs)
+    songlistStore.deleteWatch('songList', this.handleNewSongs)
+    songlistStore.deleteWatch('searchSongs', this.handleSrarchSongs)
   }
 })

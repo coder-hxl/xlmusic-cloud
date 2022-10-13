@@ -64,7 +64,7 @@ Page({
   },
 
   async handleLogin() {
-    const res = await userInfoStore.loginActions()
+    const res = await userInfoStore.loginAction()
     if (!res.state) {
       wx.showToast({ title: '登录失败~', icon: 'error' })
       return false

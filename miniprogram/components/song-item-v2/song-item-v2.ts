@@ -59,7 +59,7 @@ Component({
       // 0.验证是否登陆
       const isLogin = userInfoStore.isLogin
       if (!isLogin) {
-        const res = await userInfoStore.loginActions()
+        const res = await userInfoStore.loginAction()
         if (!res.state) return
       }
 
@@ -115,10 +115,10 @@ Component({
 
       // 2.删除/添加 喜欢
       if (isLove) {
-        handleRes = await userInfoStore.deleteLoveSong(currentSong.id)
+        handleRes = await userInfoStore.deleteLoveSongAction(currentSong.id)
         this.setData({ isLove: !handleRes.res })
       } else {
-        handleRes = await userInfoStore.addLoveSong(currentSong)
+        handleRes = await userInfoStore.addLoveSongAction(currentSong)
         this.setData({ isLove: handleRes.res })
       }
 
@@ -142,7 +142,7 @@ Component({
       // 3.更新
       const tapIndex = res?.tapIndex
       const song = this.data.itemData
-      const addRes = await userInfoStore.addSongToMenu(tapIndex, song)
+      const addRes = await userInfoStore.addSongToMenuAction(tapIndex, song)
 
       return addRes
     },
@@ -151,7 +151,7 @@ Component({
       const menuId = this.properties.mySongMenu_id
       const songId = this.data.itemData.id
 
-      const res = await userInfoStore.deleteSongToMenu(menuId, songId)
+      const res = await userInfoStore.deleteSongToMenuAction(menuId, songId)
 
       return res
     },

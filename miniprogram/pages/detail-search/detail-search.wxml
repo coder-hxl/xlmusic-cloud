@@ -1,6 +1,6 @@
 <!--pages/detail-search/detail-search.wxml-->
 <!-- 1.搜索 -->
-<van-search focus placeholder="请输入搜索关键词" background="#fafafa" bind:change="onInputChange" />
+<van-search focus placeholder="请输入搜索关键词" background="#fafafa" bind:search="onSearch" bind:change="onInputChange" />
 
 <!-- 2.推荐列表 -->
 <view class="suggest-songs">

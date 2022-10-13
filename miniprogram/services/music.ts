@@ -47,3 +47,7 @@ export function getLyric(id: number) {
 export function getSearchSuggestKey(keywords: string) {
   return xlRequest.get({ url: '/search/suggest?keywords', data: { keywords } })
 }
+
+export function getSearchSong(keywords: string) {
+  return xlRequest.get({ url: '/cloudsearch', data: { keywords } })
+}

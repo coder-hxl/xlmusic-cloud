@@ -88,13 +88,14 @@ page {
   position: relative;
   display: flex;
   align-items: center;
+  padding: 0 20rpx;
   height: 100%;
 }
 
 .play-bar .left .album {
   position: absolute;
+  left: 10rpx;
   bottom: 30rpx;
-  left: 0;
   width: 80rpx;
   height: 0;
   border-radius: 50%;

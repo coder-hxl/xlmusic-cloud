@@ -46,7 +46,7 @@ const userInfoStore = xlStore({
   },
 
   actions: {
-    async loginActions() {
+    async loginAction() {
       // 1.获取用户信息
       let res: WechatMiniprogram.GetUserProfileSuccessCallbackResult | null = null
       try {
@@ -151,12 +151,12 @@ const userInfoStore = xlStore({
       return (this.history = data)
     },
 
-    async addLoveSong(song: any): Promise<IAddOrDeleteRes> {
+    async addLoveSongAction(song: any): Promise<IAddOrDeleteRes> {
       // 0.验证
       // 0.1. 验证登录
       const isLogin = this.isLogin
       if (!isLogin) {
-        const res = await this.loginActions()
+        const res = await this.loginAction()
         if (!res.state) {
           return {
             res: false,
@@ -197,7 +197,7 @@ const userInfoStore = xlStore({
       }
     },
 
-    async addSongToMenu(
+    async addSongToMenuAction(
       menuIndex: number,
       song: any
     ): Promise<IAddOrDeleteRes> {
@@ -248,28 +248,24 @@ const userInfoStore = xlStore({
       const isLogin = this.isLogin
       if (!isLogin) return
 
-      // 处理历史记录里歌的个数
-      this.getHistoryAction().then((res) => {
-        const tracks: any[] = res.tracks
-        const upSong = tracks[tracks.length - 1]
+      // 1.获取之前存储的歌曲
+      const res: IHistory = this.history
+      const tracks: any[] = res.tracks
+      const upSong = tracks[0] ?? {}
 
-        // 1.同一首不用重复添加
-        console.log(song.id, upSong.id)
-        if (upSong && upSong.id === song.id)
-          if (tracks.length > 200) {
-            // 2.不允许超出200首
-            historyCol.update({}, { tracks: cmd.unshift() }, false)
-            historyCol.update({}, { tracks: cmd.push(song) }, false)
-            this.getHistoryAction()
-            return
-          }
+      // 2.同一首不用重复添加
+      if (upSong.id === song.id) return
 
-        historyCol.update({}, { tracks: cmd.push(song) }, false)
-        this.getHistoryAction()
-      })
+      // 3.不允许超出200首
+      if (tracks.length > 200) {
+        await historyCol.update({}, { tracks: cmd.shift() }, false)
+      }
+
+      await historyCol.update({}, { tracks: cmd.push(song) }, false)
+      await this.getHistoryAction()
     },
 
-    async deleteLoveSong(songId: number): Promise<IAddOrDeleteRes> {
+    async deleteLoveSongAction(songId: number): Promise<IAddOrDeleteRes> {
       // 1.获取追踪的歌曲, 选出要保留的
       const newTracks: any[] = this.loveRecord.tracks
         .filter((item: any) => item.id !== songId)
@@ -299,7 +295,7 @@ const userInfoStore = xlStore({
       }
     },
 
-    async deleteSongToMenu(
+    async deleteSongToMenuAction(
       menuId: string,
       songId: number
     ): Promise<IAddOrDeleteRes> {
