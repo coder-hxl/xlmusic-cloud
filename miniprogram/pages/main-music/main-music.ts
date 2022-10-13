@@ -5,10 +5,10 @@ import playerStore from '../../stores/playerStore'
 
 import { getBanner } from '../../services/music'
 
-import querySelect from '../../utils/query-select'
+import { selectViewport } from '../../utils/query-select'
 import throttle from '../../utils/throttle'
 
-const querySelectThrottle = throttle(querySelect)
+const selectViewportThrottle = throttle(selectViewport)
 
 Page({
   data: {
@@ -53,7 +53,7 @@ Page({
   },
 
   async onBannerImageLoad() {
-    const res = await querySelectThrottle('.banner-image')
+    const res = await selectViewportThrottle('.banner-image')
     this.setData({ bannerHeight: res[0].height })
   },
 

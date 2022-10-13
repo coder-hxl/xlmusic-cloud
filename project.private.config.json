@@ -38,8 +38,8 @@
         },
         {
           "name": "音乐播放",
-          "pathName": "pages/music-player/music-player",
-          "query": "id=167655",
+          "pathName": "packagePlayer/pages/music-player/music-player",
+          "query": "id=1436709403",
           "launchMode": "default",
           "scene": null
         },

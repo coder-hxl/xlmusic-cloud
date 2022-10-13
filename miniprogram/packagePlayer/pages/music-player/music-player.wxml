@@ -43,9 +43,9 @@
   </swiper-item>
 
   <swiper-item class="lyric-list">
-    <scroll-view class="scroll-view" scroll-y scroll-top="{{lyricScrollTop}}" scroll-with-animation>
+    <scroll-view class="scroll-view" scroll-y scroll-top="{{lyricScrollTop}}" enhanced scroll-with-animation binddragend="onLyricDragend">
       <block wx:for="{{lyricInfo}}" wx:key="time">
-        <view class="item {{index === currentLyricIndex ? 'activate' : ''}}" style="padding-top: {{index === 0 ? contentHeight / 2 - 60 : 0}}px; padding-bottom: {{index === lyricInfo.length - 1 ? contentHeight / 2 + 60 : 0}}px;">
+        <view class="lyric-item {{index === currentLyricIndex ? 'activate' : ''}}" style="margin-top:{{index == 0 ? contentHeight / 2 - firstLyricTop : ''}}px; padding-bottom:{{index === lyricInfo.length -1 ? contentHeight / 2 : ''}}px">
           {{item.text}}
         </view>
       </block>

@@ -1,4 +1,4 @@
-interface IQuerySelectResItem {
+interface ISelectViewportItem {
   bottom: number
   dataset: {}
   height: number
@@ -11,10 +11,8 @@ interface IQuerySelectResItem {
   nv_length: number
 }
 
-type IQuerySelectRes = IQuerySelectResItem[]
-
-export default function querySelect(target: string) {
-  return new Promise<IQuerySelectRes>((resolve) => {
+export function selectViewport(target: string) {
+  return new Promise<ISelectViewportItem[]>((resolve) => {
     const query = wx.createSelectorQuery()
     query.select(target).boundingClientRect()
     query.selectViewport()
@@ -22,4 +20,12 @@ export default function querySelect(target: string) {
   })
 }
 
-export { IQuerySelectRes }
+export function selectAllArea(target: string) {
+  return new Promise((resolve) => {
+    const query = wx.createSelectorQuery()
+    query.selectAll(target).boundingClientRect(resolve)
+    query.exec()
+  })
+}
+
+export { ISelectViewportItem }
