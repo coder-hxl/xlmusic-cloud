@@ -1,8 +1,11 @@
-import { throttle } from 'underscore'
+import { throttle, debounce } from 'underscore'
 
 import playerStore, { audioContext } from '../../../stores/playerStore'
+import { selectAllArea } from '../../../utils/query-select'
 
 const app = getApp()
+const navHeight = app.globalData.navHeight
+const statusHeight = app.globalData.statusHeight
 
 Page({
   data: {
@@ -26,6 +29,8 @@ Page({
 
     id: 0,
     lyricInfo: [],
+    lyricAreas: [] as any[],
+    firstLyricTop: 0,
     currentSong: {},
     currentLyricText: '',
     currentLyricIndex: -1,
@@ -37,7 +42,8 @@ Page({
 
     isSlider: false,
 
-    lyricScrollTop: 0
+    lyricScrollTop: 0,
+    isLyricScrollTop: true
   },
 
   onLoad(options: any) {
@@ -116,6 +122,14 @@ Page({
     playerStore.playNewMusicAction()
   },
 
+  onLyricDragend() {
+    this.data.isLyricScrollTop = false
+
+    debounce(() => {
+      this.data.isLyricScrollTop = true
+    }, 3000)()
+  },
+
   // ================== Store ==================
   onPlayerStore(key: string, value: any) {
     if (key === 'id') {
@@ -125,14 +139,36 @@ Page({
     } else if (key === 'currentLyricText') {
       this.setData({ currentLyricText: value })
     } else if (key === 'currentLyricIndex') {
-      this.setData({ currentLyricIndex: value, lyricScrollTop: 30 * value })
+      if (!this.data.isLyricScrollTop) return
+
+      const itemArea = this.data.lyricAreas[value] ?? {}
+      const contentHeight = this.data.contentHeight
+
+      // 14 是播放的歌词的 padding 上下值
+      const lyricScrollTop =
+        itemArea.top - (contentHeight / 2 + navHeight + statusHeight + 14) ?? 0
+
+      this.setData({
+        currentLyricIndex: value,
+        lyricScrollTop
+      })
     } else if (key === 'currentTime') {
       if (value === 0) this.setData({ currentTime: value, sliderValue: value })
       this.updateProgress()
     } else if (key === 'durationTime') {
       this.setData({ durationTime: value })
     } else if (key === 'lyricInfo') {
-      this.setData({ lyricInfo: value })
+      this.setData({ lyricInfo: value }, () => {
+        selectAllArea('.lyric-item').then((res: any) => {
+          const lyricAreas = res
+
+          if (!lyricAreas.length) return
+
+          const firstLyricTop = res[0].height + navHeight + statusHeight
+
+          this.setData({ lyricAreas, firstLyricTop })
+        })
+      })
     } else if (key === 'playModeName') {
       this.setData({ playModeName: value })
     } else if (key === 'isPlaying') {

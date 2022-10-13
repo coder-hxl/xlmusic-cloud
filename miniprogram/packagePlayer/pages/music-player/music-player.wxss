@@ -125,15 +125,12 @@
   display: none;
 }
 
-.lyric-list .scroll-view .item {
-  padding: 0 40rpx;
-  height: 30px;
-  line-height: 30px;
+.lyric-list .scroll-view .lyric-item {
+  padding: 14rpx 40rpx;
 }
 
-.lyric-list .scroll-view .item.activate {
-  height: 40px;
-  line-height: 40px;
+.lyric-list .scroll-view .lyric-item.activate {
+  padding: 20rpx 40rpx;
   font-size: 34rpx;
-  color: #00aeff;
+  color: #007fe7;
 }
