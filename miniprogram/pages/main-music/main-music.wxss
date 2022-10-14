@@ -65,7 +65,7 @@ page {
 /* --------------------- 播放工具栏 --------------------- */
 
 .play-bar-placeholder {
-  height: 110rpx;
+  height: 130rpx;
 }
 
 .play-bar {
@@ -76,9 +76,9 @@ page {
   justify-content: space-between;
   align-items: center;
   box-sizing: border-box;
-  padding: 0 20rpx;
+  padding: 0 40rpx;
   width: 100%;
-  height: 80rpx;
+  height: 100rpx;
   background-color: #fff;
   box-shadow: 0 -4rpx 6rpx rgba(189, 189, 189, 0.3);
 }
@@ -94,11 +94,13 @@ page {
 
 .play-bar .left .album {
   position: absolute;
-  left: 10rpx;
-  bottom: 30rpx;
-  width: 80rpx;
+  left: 0;
+  bottom: 34rpx;
+  width: 74rpx;
   height: 0;
   border-radius: 50%;
+  border: 14rpx solid #000000;
+  background-color: #353535;
 }
 
 @keyframes albumRotate {
@@ -116,8 +118,8 @@ page {
 }
 
 .play-bar .left .name {
-  margin-left: 84rpx;
-  font-size: 26rpx;
+  margin-left: 90rpx;
+  font-size: 32rpx;
 }
 
 .play-bar .right {
@@ -126,12 +128,12 @@ page {
 }
 
 .play-bar .right .pause-or-play {
-  width: 44rpx;
+  width: 56rpx;
   height: 0;
 }
 
-.play-bar .right .play-list {
-  margin-left: 14rpx;
-  width: 50rpx;
+.play-bar .right .play-next {
+  margin-left: 22rpx;
+  width: 56rpx;
   height: 0;
 }

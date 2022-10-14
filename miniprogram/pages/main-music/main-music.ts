@@ -116,5 +116,9 @@ Page({
     playerStore.changeMusicStateAction()
   },
 
+  onPlayNextTap() {
+    playerStore.playNewMusicAction()
+  },
+
   onUnload() {}
 })

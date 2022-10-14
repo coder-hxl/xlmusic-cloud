@@ -1,6 +1,6 @@
 <!--pages/main-muisc/main-music.wxml-->
 <!-- 1.搜索 -->
-<van-search value="{{searchValue || ''}}" placeholder="请输入搜索关键词" background="#fafafa" bind:click-input="onInputClick" />
+<van-search value="{{searchValue || ''}}" disabled placeholder="请输入搜索关键词" background="#fafafa" bind:click-input="onInputClick" />
 
 
 <!-- 2.轮播图 -->
@@ -44,6 +44,6 @@
   </view>
   <view class="right">
     <image class="pause-or-play" mode="widthFix" src="/assets/images/music/{{isPlaying ? 'pause' : 'play'}}_icon.png" bindtap="onPauseOrPlayTap" />
-    <image class="play-list" mode="widthFix" src="/assets/images/music/playlist_icon.png" />
+    <image class="play-next" mode="widthFix" src="/assets/images/music/play_next.png" bindtap="onPlayNextTap" />
   </view>
 </view>
