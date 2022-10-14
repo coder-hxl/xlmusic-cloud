@@ -7,6 +7,10 @@ const app = getApp()
 const navHeight = app.globalData.navHeight
 const statusHeight = app.globalData.statusHeight
 
+const controlLyricScrollTopDebounce = debounce((pageData: any) => {
+  pageData.isLyricScrollTop = true
+}, 3000)
+
 Page({
   data: {
     stateKey: [
@@ -19,7 +23,8 @@ Page({
       'lyricInfo',
       'playModeIndex',
       'playModeName',
-      'isPlaying'
+      'isPlaying',
+      'playSongList'
     ],
 
     contentHeight: app.globalData.contentHeight,
@@ -38,12 +43,14 @@ Page({
     currentTime: 0,
     playModeIndex: 0, // 0:顺序播放 1:单曲循环 2:随机播放
     playModeName: 'order',
-    isPlaying: true,
-
-    isSlider: false,
+    playSongList: [] as any[],
 
     lyricScrollTop: 0,
-    isLyricScrollTop: true
+
+    isPlaying: true,
+    isSlider: false,
+    isLyricScrollTop: true,
+    showPlaySongList: false
   },
 
   onLoad(options: any) {
@@ -122,12 +129,32 @@ Page({
     playerStore.playNewMusicAction()
   },
 
+  onPlaySongListTap() {
+    this.setData({ showPlaySongList: true })
+  },
+
+  onPlaySongListClose() {
+    this.setData({ showPlaySongList: false })
+  },
+
+  onSongListItemTap(event: any) {
+    const { id } = event.currentTarget.dataset
+    playerStore.playMusicWithSongIdAction(id)
+    this.setData({ showPlaySongList: false })
+  },
+
+  onDeleteListItemTap(event: any) {
+    const { id } = event.currentTarget.dataset
+    const newPlaySongList = this.data.playSongList.filter(
+      (item) => item.id !== id
+    )
+    playerStore.playSongList = newPlaySongList
+  },
+
   onLyricDragend() {
     this.data.isLyricScrollTop = false
 
-    debounce(() => {
-      this.data.isLyricScrollTop = true
-    }, 3000)()
+    controlLyricScrollTopDebounce(this.data)
   },
 
   // ================== Store ==================
@@ -139,7 +166,7 @@ Page({
     } else if (key === 'currentLyricText') {
       this.setData({ currentLyricText: value })
     } else if (key === 'currentLyricIndex') {
-      if (!this.data.isLyricScrollTop) return
+      const isLyricScrollTop = this.data.isLyricScrollTop
 
       const itemArea = this.data.lyricAreas[value] ?? {}
       const contentHeight = this.data.contentHeight
@@ -148,10 +175,11 @@ Page({
       const lyricScrollTop =
         itemArea.top - (contentHeight / 2 + navHeight + statusHeight + 14) ?? 0
 
-      this.setData({
-        currentLyricIndex: value,
-        lyricScrollTop
-      })
+      this.setData({ currentLyricIndex: value })
+
+      if (isLyricScrollTop) {
+        this.setData({ lyricScrollTop })
+      }
     } else if (key === 'currentTime') {
       if (value === 0) this.setData({ currentTime: value, sliderValue: value })
       this.updateProgress()
@@ -173,6 +201,8 @@ Page({
       this.setData({ playModeName: value })
     } else if (key === 'isPlaying') {
       this.setData({ isPlaying: value })
+    } else if (key === 'playSongList') {
+      this.setData({ playSongList: value })
     }
   },
 

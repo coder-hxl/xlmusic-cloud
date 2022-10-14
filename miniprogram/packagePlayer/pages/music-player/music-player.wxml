@@ -38,7 +38,7 @@
       <image class="btn" mode="widthFix" src="/assets/images/player/play_prev.png" bindtap="onPlayPrevTap"></image>
       <image class="btn pause" mode="widthFix" src="/assets/images/player/play_{{isPlaying ? 'pause' : 'resume' }}.png" bindtap="onPlayOrPauseTap"></image>
       <image class="btn" mode="widthFix" src="/assets/images/player/play_next.png" bindtap="onPlayNextTap"></image>
-      <image class="btn" mode="widthFix" src="/assets/images/player/play_music.png"></image>
+      <image class="btn" mode="widthFix" src="/assets/images/player/play_music.png" bindtap="onPlaySongListTap"></image>
     </view>
   </swiper-item>
 
@@ -52,3 +52,21 @@
     </scroll-view>
   </swiper-item>
 </swiper>
+
+
+<van-popup class="play-song-list" show="{{ showPlaySongList }}" round position="bottom" custom-style="height: 60%;" bind:close="onPlaySongListClose">
+  <block wx:for="{{playSongList}}" wx:key="id">
+    <view class="item" bindtap="onSongListItemTap" data-id="{{item.id}}">
+      <view class="info">
+        <view class="name">{{item.name}}</view>
+        <view class="artists">
+          <block wx:for="{{item.ar}}" wx:key="id" wx:for-item="artist" wx:for-index="artistIdx">
+            <text>{{artist.name}}</text>
+            <text class="division" wx:if="{{item.ar.length > 1 && item.ar.length !== artistIdx + 1}}">/</text>
+          </block>
+        </view>
+      </view>
+      <image class="delete-icon" mode="widthFix" src="/assets/images/player/delete.png" data-id="{{item.id}}" catchtap="onDeleteListItemTap"></image>
+    </view>
+  </block>
+</van-popup>
