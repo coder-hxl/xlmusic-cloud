@@ -7,8 +7,9 @@ const app = getApp()
 const navHeight = app.globalData.navHeight
 const statusHeight = app.globalData.statusHeight
 
-const controlLyricScrollTopDebounce = debounce((pageData: any) => {
-  pageData.isLyricScrollTop = true
+const controlLyricScrollTopDebounce = debounce((page: any) => {
+  const lyricScrollTop = page.data.lyricScrollTop
+  page.setData({ isLyricScrollTop: true, lyricScrollTop })
 }, 3000)
 
 Page({
@@ -154,7 +155,7 @@ Page({
   onLyricDragend() {
     this.data.isLyricScrollTop = false
 
-    controlLyricScrollTopDebounce(this.data)
+    controlLyricScrollTopDebounce(this)
   },
 
   // ================== Store ==================
@@ -179,6 +180,8 @@ Page({
 
       if (isLyricScrollTop) {
         this.setData({ lyricScrollTop })
+      } else {
+        this.data.lyricScrollTop = lyricScrollTop
       }
     } else if (key === 'currentTime') {
       if (value === 0) this.setData({ currentTime: value, sliderValue: value })
