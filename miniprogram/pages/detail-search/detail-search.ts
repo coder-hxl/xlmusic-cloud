@@ -2,7 +2,6 @@
 import { debounce } from 'underscore'
 
 import { getSearchSuggestKey } from '../../services/music'
-import playerStore from '../../stores/playerStore'
 
 Page({
   data: {
@@ -20,17 +19,13 @@ Page({
   }, 300),
 
   onSuggestItemTap(event: any) {
-    // 播放音乐
+    // 搜索
     const { item } = event.currentTarget.dataset
-    playerStore.playSongIndex = 0
-    playerStore.playSongList = [item]
-    wx.navigateTo({
-      url: `/packagePlayer/pages/music-player/music-player?id=${item.id}`
-    })
+    this.onSearch(null, item.name)
   },
 
-  onSearch(event: any) {
-    const searchKey = event.detail
+  onSearch(event: any, suggestKeyword: string | undefined) {
+    const searchKey = suggestKeyword ? suggestKeyword : event.detail
     const listType = 3
 
     wx.navigateTo({
