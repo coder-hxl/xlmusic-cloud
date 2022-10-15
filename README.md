@@ -1,6 +1,6 @@
 # XLMusic-Cloud
 
-XLMusic-Cloud —— 基于 WXML、WXSS、WXS、TS、云开发 等技术实现的微信音乐小程序。
+XLMusic-Cloud —— 基于 WXML、WXSS、WXS、TS、云开发 等技术开发的微信音乐小程序。
 
 ## 使用说明
 
