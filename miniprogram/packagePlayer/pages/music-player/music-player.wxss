@@ -149,30 +149,32 @@
 }
 
 .play-song-list .item .info {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  padding-right: 30rpx;
+  width: 92%;
 }
 
 .play-song-list .item .info .name {
+  padding-right: 50rpx;
   font-size: 30rpx;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .play-song-list .item .info .artists {
-  margin-left: 20rpx;
+  padding: 6rpx 60rpx 0 8rpx;
   font-size: 24rpx;
   color: #5e5e5e;
 
-  /* white-space: nowrap;
+  white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis; */
+  text-overflow: ellipsis;
 }
 
 .play-song-list .item .info .artists .division {
-  padding: 0 2rpx;
+  margin: 0 4rpx;
 }
 
 .play-song-list .item .delete-icon {
-  width: 46rpx;
+  width: 8%;
 }

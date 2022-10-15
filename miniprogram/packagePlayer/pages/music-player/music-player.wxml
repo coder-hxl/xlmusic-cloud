@@ -62,7 +62,7 @@
         <view class="artists">
           <block wx:for="{{item.ar}}" wx:key="id" wx:for-item="artist" wx:for-index="artistIdx">
             <text>{{artist.name}}</text>
-            <text class="division" wx:if="{{item.ar.length > 1 && item.ar.length !== artistIdx + 1}}">/</text>
+            <text class="division" wx:if="{{artistIdx !== item.ar.length - 1}}">/</text>
           </block>
         </view>
       </view>

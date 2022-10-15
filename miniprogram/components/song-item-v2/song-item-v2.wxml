@@ -9,7 +9,8 @@
     <view class="ars">
       <image class="icon" mode="widthFix" src="/assets/images/icons/sq_icon.png"></image>
       <block wx:for="{{itemData.ar}}" wx:key="id">
-        <view class="ars-itm">{{item.name}}</view>
+        <text class="ars-itm">{{item.name}}</text>
+        <text class="division" wx:if="{{index !== itemData.ar.length - 1}}">/</text>
       </block>
     </view>
   </view>

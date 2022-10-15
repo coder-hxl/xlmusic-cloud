@@ -11,24 +11,30 @@
 }
 
 .order {
-  padding: 0 20rpx;
+  padding: 0 10rpx;
   text-align: center;
-  font-size: 28rpx;
+  font-size: 30rpx;
 }
 
 .love {
   padding: 0 4rpx;
-  width: 38rpx;
+  width: 40rpx;
   height: 0;
 }
 
 .song {
-  padding-left: 20rpx;
+  padding-left: 16rpx;
   flex: 1;
 }
 
 .name {
   font-size: 32rpx;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
 
 .ars {
@@ -38,6 +44,12 @@
   margin-top: 6rpx;
   font-size: 24rpx;
   color: #666;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }
 
 .icon {
@@ -47,18 +59,12 @@
   margin-top: 2rpx;
 }
 
-.ars-itm::before {
-  content: '/';
-  padding: 0 6rpx;
-}
-
-.ars-itm:first-of-type::before {
-  content: '';
-  padding: 0;
+.division {
+  margin: 0 4rpx;
 }
 
 .control {
   margin: 0 30rpx;
-  font-size: 36rpx;
+  font-size: 40rpx;
   color: #3b3b3b;
 }
