@@ -84,12 +84,12 @@ Page({
     wx.navigateBack()
   },
 
-  onSwiperChange(event: any) {
+  onSwiperChange(event: WechatMiniprogram.SwiperChange) {
     const current = event.detail.current
     this.setData({ currentPage: current })
   },
 
-  onSliderChange(event: any) {
+  onSliderChange(event: WechatMiniprogram.SliderChange) {
     // 1.滑动结束
     this.data.isSlider = false
 
@@ -99,7 +99,7 @@ Page({
     audioContext.seek(currentTime / 1000)
   },
 
-  onSliderChangeing: throttle(function (this: any, event: any) {
+  onSliderChangeing: throttle(function (this: any, event: WechatMiniprogram.SliderChanging) {
     // 1.正在滑动
     this.data.isSlider = true
 
@@ -109,7 +109,7 @@ Page({
     this.setData({ currentTime })
   }, 100),
 
-  onTabTap(event: any) {
+  onTabTap(event: WechatMiniprogram.Touch) {
     const index = event.currentTarget.dataset.index
     this.setData({ currentPage: index })
   },
@@ -138,13 +138,13 @@ Page({
     this.setData({ showPlaySongList: false })
   },
 
-  onSongListItemTap(event: any) {
+  onSongListItemTap(event: WechatMiniprogram.Touch) {
     const { id } = event.currentTarget.dataset
     playerStore.playMusicWithSongIdAction(id)
     this.setData({ showPlaySongList: false })
   },
 
-  onDeleteListItemTap(event: any) {
+  onDeleteListItemTap(event: WechatMiniprogram.Touch) {
     const { id } = event.currentTarget.dataset
     const newPlaySongList = this.data.playSongList.filter(
       (item) => item.id !== id

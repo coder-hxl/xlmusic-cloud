@@ -16,7 +16,7 @@ Page({
     this.setData({ officialList, globalList })
   },
 
-  onGloablItemTap(event: any) {
+  onGloablItemTap(event: WechatMiniprogram.Touch) {
     const id = event.currentTarget.dataset.id
     const type = 3
     wx.navigateTo({

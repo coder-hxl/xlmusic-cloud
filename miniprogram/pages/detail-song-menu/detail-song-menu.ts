@@ -29,7 +29,7 @@ Page({
     this.setData({ detailData: res.playlist })
   },
 
-  onSongItemTap(event: any) {
+  onSongItemTap(event: WechatMiniprogram.Touch) {
     const index = event.currentTarget.dataset.index
     playerStore.playSongIndex = index
 

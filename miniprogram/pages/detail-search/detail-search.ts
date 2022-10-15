@@ -3,13 +3,20 @@ import { debounce } from 'underscore'
 
 import { getSearchSuggestKey } from '../../services/music'
 
+interface IInputEvent extends WechatMiniprogram.BaseEvent {
+  detail: string
+  changedTouches: undefined
+  touches: undefined
+  mut: boolean
+}
+
 Page({
   data: {
     suggestSongs: []
   },
 
   // ==================== 事件 ====================
-  onInputChange: debounce(async function (this: any, event: any) {
+  onInputChange: debounce(async function (this: any, event: IInputEvent) {
     const value = event.detail
 
     // 获取推荐歌
@@ -18,14 +25,14 @@ Page({
     this.setData({ suggestSongs })
   }, 300),
 
-  onSuggestItemTap(event: any) {
+  onSuggestItemTap(event: WechatMiniprogram.Touch) {
     // 搜索
     const { item } = event.currentTarget.dataset
     this.onSearch(null, item.name)
   },
 
-  onSearch(event: any, suggestKeyword: string | undefined) {
-    const searchKey = suggestKeyword ? suggestKeyword : event.detail
+  onSearch(event: IInputEvent | null, suggestKeyword: string | undefined) {
+    const searchKey = suggestKeyword ? suggestKeyword : event!.detail
     const listType = 3
 
     wx.navigateTo({

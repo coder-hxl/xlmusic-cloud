@@ -24,7 +24,7 @@ Page({
     }
   },
 
-  onSongItemTap(event: any) {
+  onSongItemTap(event: WechatMiniprogram.Touch) {
     const index = event.currentTarget.dataset.index
     playerStore.playSongIndex = index
     playerStore.playSongList = this.data.songList

@@ -75,7 +75,7 @@ Page({
     return true
   },
 
-  async onMyMusicItemTap(event: any) {
+  async onMyMusicItemTap(event: WechatMiniprogram.Touch) {
     // 1.登录, 必须登录才能使用
     const isLogin = verifyLogin()
     const loginRes = !isLogin ? await this.handleLogin() : true
@@ -122,7 +122,7 @@ Page({
     })
   },
 
-  onMySongMenuItemTap(event: any) {
+  onMySongMenuItemTap(event: WechatMiniprogram.Touch) {
     const mySongMenuIndex: number = event.currentTarget.dataset.index
     const type = 2
     wx.navigateTo({
@@ -130,7 +130,7 @@ Page({
     })
   },
 
-  async onDeleteSongMenu(event: any) {
+  async onDeleteSongMenu(event: WechatMiniprogram.Touch) {
     // 1.获取_id
     const item: ISongMenuRecord = event.currentTarget.dataset.item
     const { _id } = item
@@ -151,7 +151,7 @@ Page({
     }
   },
 
-  onCreateSongMenuIptTap: debounce(function (this: any, event: any) {
+  onCreateSongMenuIptTap: debounce(function (this: any, event: WechatMiniprogram.Touch) {
     const { modelkey } = event.currentTarget.dataset
     const value = event.detail.value
 
